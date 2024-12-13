@@ -98,7 +98,7 @@
         <a href="payment.php"><i class="fas fa-credit-card"></i> Thanh Toán</a>
     </div>
     <div class="container mt-5">
-        <h2 class="text-center mb-4"><i class="fas fa-plane-departure"></i> Tìm Chuyến Bay</h2>
+<h2 class="text-center mb-4"><i class="fas fa-plane-departure"></i> Tìm Chuyến Bay</h2>
         <form action="select_flight.php" method="GET">
             <!-- Loại vé -->
             <div class="mb-3">
@@ -117,11 +117,19 @@
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="from" class="form-label">Điểm đi</label>
-                    <input type="text" class="form-control" id="from" name="from" required>
+                    <select name="diemDi" id="diemDi" class="form-control">
+                        <?php
+                            include_once 'view/optionLocation.php';
+                        ?>
+                    </select>
                 </div>
                 <div class="col-md-6">
                     <label for="to" class="form-label">Điểm đến</label>
-                    <input type="text" class="form-control" id="to" name="to" required>
+                    <select name="diemDen" id="diemDen" class="form-control">
+                        <?php
+                            include_once 'view/optionLocation.php'; 
+                        ?>
+                    </select>
                 </div>
             </div>
 
@@ -139,19 +147,15 @@
 
             <!-- Số lượng hành khách -->
             <div class="row mb-3">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label for="adults" class="form-label">Người lớn (>= 12 tuổi)</label>
                     <input type="number" class="form-control" id="adults" name="adults" min="1" max="10" value="1" required>
                 </div>
-                <div class="col-md-4">
-                    <label for="children" class="form-label">Trẻ em (2-11 tuổi)</label>
+                <div class="col-md-6">
+                    <label for="children" class="form-label">Trẻ em (0-11 tuổi)</label>
                     <input type="number" class="form-control" id="children" name="children" min="0" max="10" value="0">
                 </div>
-                <div class="col-md-4">
-                    <label for="infants" class="form-label">Em bé (< 2 tuổi)</label>
-                    <input type="number" class="form-control" id="infants" name="infants" min="0" max="5" value="0">
-                </div>
-            </div>
+</div>
 
             <button type="submit" class="btn btn-primary w-100">Tìm chuyến bay</button>
         </form>

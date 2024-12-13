@@ -1,18 +1,16 @@
-<?php
-// model/db_connection.php
-$servername = "localhost";
-$username = "root";
-$password = ""; // Mặc định trong XAMPP là rỗng
-$dbname = "flight_booking";
+<?php    
+    class connectDB{
+        function connect(){
+            $conn = new mysqli("localhost", "root", "", "vmb");
+            if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+            }else{
+                return $conn;
+            }
+        }
 
-// Tạo kết nối
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Kiểm tra kết nối
-if ($conn->connect_error) {
-    die("Kết nối thất bại: " . $conn->connect_error);
-}
-
-// Đảm bảo sử dụng UTF-8
-$conn->set_charset("utf8");
+        function disconnect($conn){
+            $conn->close();
+        }
+    }
 ?>

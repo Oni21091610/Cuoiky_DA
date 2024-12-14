@@ -1,5 +1,6 @@
 <?php
-    include_once 'model/user.php';
+    include 'model/user.php';
+    include '../model/user.php';
 
     class cUser{
         public function selectLocationID($location){
@@ -23,6 +24,12 @@
         public function selectAirlinesALL(){
             $mUser = new mUser();
             $result = $mUser->selectAirlinesALL();
+            return $result;
+        }
+
+        public function selectInfomationAllByIDAirlines($id){
+            $mUser = new mUser();
+            $result = $mUser->selectInfomationAllByIDAirlines($id);
             return $result;
         }
     }

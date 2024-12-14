@@ -7,7 +7,7 @@
             $p = new connectDB();
             $conn = $p->connect();
             if ($conn) {
-                $string = "SELECT location FROM flights LIMIT 1";
+                $string = "SELECT * FROM flights LIMIT 1";
                 $result = mysqli_query($conn, $string);
                 
                 $p->disconnect($conn);
@@ -25,7 +25,7 @@
             $p = new connectDB();
             $conn = $p->connect();
             if ($conn) {
-                $string = "SELECT DISTINCT location FROM flights";
+                $string = "SELECT DISTINCT * FROM flights";
                 $result = mysqli_query($conn, $string);
                 
                 $p->disconnect($conn);
@@ -39,7 +39,7 @@
             $p = new connectDB();
             $conn = $p->connect();
             if ($conn) {
-                $string = "SELECT name FROM airlines WHERE airline_id = $idAirline";
+                $string = "SELECT * FROM airlines WHERE airline_id = $idAirline";
                 $result = mysqli_query($conn, $string);
                 
                 $p->disconnect($conn);
@@ -58,7 +58,7 @@
             $p = new connectDB();
             $conn = $p->connect();
             if ($conn) {
-                $string = "SELECT DISTINCT name FROM airlines";
+                $string = "SELECT DISTINCT * FROM airlines";
                 $result = mysqli_query($conn, $string);
                 
                 $p->disconnect($conn);
@@ -66,6 +66,21 @@
             } else {
                 return false; 
             }
+        }
+
+        public function selectInfomationAllByIDAirlines($idAirline){
+            $p = new connectDB();
+            $conn = $p->connect();
+            if ($conn) {
+                $string = "SELECT * FROM airlines INNER JOIN flights ON airlines.airline_id = flights.airline_id";
+                $result = mysqli_query($conn, $string);
+                
+                $p->disconnect($conn);
+                return $result;
+            } else {
+                return false; 
+            }
+
         }
     }
         

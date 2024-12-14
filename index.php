@@ -99,10 +99,20 @@
     </div>
     <div class="container mt-5">
 <h2 class="text-center mb-4"><i class="fas fa-plane-departure"></i> Tìm Chuyến Bay</h2>
-        <form action="select_flight.php" method="GET">
+        <form action="view/select_flight.php" method="GET">
             <!-- Loại vé -->
-            <div class="mb-3">
-                <label class="form-label">Loại vé:</label>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Hãng bay:</label>
+                    <div>
+                        <select name="airline" id="airline" class="form-control">
+                            
+                            <?php include 'component/optionAirlines.php'; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                <label class="form-label">Loại vé:</label> <br>
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="trip_type" id="one_way" value="one_way" checked onchange="toggleReturnDate()">
                     <label class="form-check-label" for="one_way">Một chiều</label>
@@ -110,6 +120,8 @@
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="trip_type" id="round_trip" value="round_trip" onchange="toggleReturnDate()">
                     <label class="form-check-label" for="round_trip">Khứ hồi</label>
+                </div>
+
                 </div>
             </div>
 
@@ -119,7 +131,7 @@
                     <label for="from" class="form-label">Điểm đi</label>
                     <select name="diemDi" id="diemDi" class="form-control">
                         <?php
-                            include_once 'view/optionLocation.php';
+                            include 'component/optionLocation.php';
                         ?>
                     </select>
                 </div>
@@ -127,7 +139,7 @@
                     <label for="to" class="form-label">Điểm đến</label>
                     <select name="diemDen" id="diemDen" class="form-control">
                         <?php
-                            include_once 'view/optionLocation.php'; 
+                            include 'component/optionLocation.php'; 
                         ?>
                     </select>
                 </div>

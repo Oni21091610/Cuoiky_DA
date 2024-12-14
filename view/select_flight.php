@@ -1,24 +1,33 @@
 <?php
-$from = $_GET['from'] ?? 'N/A';
-$to = $_GET['to'] ?? 'N/A';
-$departure_date = $_GET['departure_date'] ?? 'N/A';
-$return_date = $_GET['return_date'] ?? null;
-$adults = $_GET['adults'] ?? 0;
-$children = $_GET['children'] ?? 0;
-$infants = $_GET['infants'] ?? 0;
+    error_reporting(0);
 
-// Danh sách chuyến bay mẫu
-$flights = [
-    ['flight_code' => 'VN123', 'time' => '10:00', 'price' => 1000000],
-    ['flight_code' => 'VN124', 'time' => '14:00', 'price' => 1200000],
-    ['flight_code' => 'VN125', 'time' => '18:00', 'price' => 900000]
-];
+    $idAirline = $_GET['airline'];
+    $idDiemDi = $_GET['diemDi'] ?? null;
+    $idDiemDen = $_GET['diemDen'] ?? null; 
+    $departure_date = $_GET['departure_date'] ?? null;
+    $return_date = $_GET['return_date'] ?? null;
+    $adults_amount = $_GET['adults'] ?? 0;
+    $children_amount = $_GET['children'] ?? 0;
+
+    $cities = [
+        1 => 'Hồ Chí Minh',
+        2 => 'Hà Nội',
+        3 => 'Đà Nẵng',
+        4 => 'Hải Phòng',
+        5 => 'Nha Trang',
+        6 => 'Huế',
+        7 => 'Cần Thơ'
+    ];
+
+    $idDiemDi = isset($cities[$idDiemDi]) ? $cities[$idDiemDi] : 'Unknown';
+    $idDiemDen = isset($cities[$idDiemDen]) ? $cities[$idDiemDen] : 'Unknown';
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chọn Chuyến Bay</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
@@ -98,7 +107,7 @@ $flights = [
     </style>
 </head>
 <body>
-<div class="header-bar">
+    <div class="header-bar">
         <div>
             <img src="your-logo-url.png" alt="Logo">
         </div>
@@ -109,7 +118,7 @@ $flights = [
             <i class="fas fa-bars"></i>
         </button>
     </div>
-
+    
     <!-- Dropdown Menu -->
     <div class="dropdown-menu">
         <a href="search_flights.php"><i class="fas fa-home"></i> Trang Chủ</a>
@@ -118,37 +127,54 @@ $flights = [
     <div class="container">
         <h2 class="text-center"><i class="fas fa-plane"></i> Chọn Chuyến Bay</h2>
         <p class="text-center">
-            <strong>Từ:</strong> <?= htmlspecialchars($from) ?> - 
-            <strong>Đến:</strong> <?= htmlspecialchars($to) ?> - 
-            <strong>Ngày đi:</strong> <?= htmlspecialchars($departure_date) ?>
+            <strong>Từ:</strong> <?= htmlspecialchars($idDiemDi) ?> - 
+            <strong>Đến:</strong> <?= htmlspecialchars($idDiemDen) ?>
         </p>
         <p class="text-center">
-            <strong>Người lớn:</strong> <?= htmlspecialchars($adults) ?>, 
-            <strong>Trẻ em:</strong> <?= htmlspecialchars($children) ?>, 
-            <strong>Em bé:</strong> <?= htmlspecialchars($infants) ?>
+            <strong>Người lớn:</strong> <?= htmlspecialchars($adults_amount) ?>, 
+            <strong>Trẻ em:</strong> <?= htmlspecialchars($children_amount) ?>
         </p>
-
+        
         <div class="list-group mt-4">
-            <?php foreach ($flights as $flight): ?>
-                <div class="list-group-item">
-                    <div>
-                        <strong>Chuyến:</strong> <?= htmlspecialchars($flight['flight_code']) ?> - 
-                        <strong>Thời gian:</strong> <?= htmlspecialchars($flight['time']) ?> - 
-                        <strong>Giá:</strong> <?= number_format($flight['price'], 0, ',', '.') ?> VND
-                    </div>
-                    <form action="enter_customer_info.php" method="POST">
-                        <input type="hidden" name="flight_code" value="<?= htmlspecialchars($flight['flight_code']) ?>">
-                        <input type="hidden" name="from" value="<?= htmlspecialchars($from) ?>">
-                        <input type="hidden" name="to" value="<?= htmlspecialchars($to) ?>">
-                        <input type="hidden" name="departure_date" value="<?= htmlspecialchars($departure_date) ?>">
-                        <input type="hidden" name="return_date" value="<?= htmlspecialchars($return_date) ?>">
-                        <input type="hidden" name="adults" value="<?= htmlspecialchars($adults) ?>">
-                        <input type="hidden" name="children" value="<?= htmlspecialchars($children) ?>">
-                        <input type="hidden" name="infants" value="<?= htmlspecialchars($infants) ?>">
-                        <button type="submit" class="btn btn-primary">Đặt vé</button>
-                    </form>
-                </div>
-            <?php endforeach; ?>
+            <?php
+
+if(isset($_GET['airline']))
+{
+    error_reporting(0);
+    include '../controller/user.php';
+    $p = new cUser();
+    $result = $p->selectInfomationAllByIDAirlines($_GET['airline']);
+    
+    
+    if($result)
+    {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $total_price = $row['adult_price'] * $adults_amount + $row['child_price'] * $children_amount;
+                
+                $price = number_format($row['adult_price'] * $adults_amount + $row['child_price'] * $children_amount, 0, ',', '.');
+
+                echo '<form action="" method="post" enctype="multipart/form-data">';
+                echo '<table class="table table-bordered">';
+
+                echo '<tr>';
+                echo '<div class="d-flex align-items-center">';
+                    echo '<span class="me-2"><strong>Mã chuyến bay:</strong> '.$row['flight_number'].'</span>';
+                    echo '<span class="me-2"><strong>Thời Gian:</strong> '.$row['departure_time'].'</span>';
+                    echo '<span class="me-2"><strong>Giá:</strong> '.$price.' VND</span>';
+                    echo '<div class="ms-auto"><a href="enter_customer_info.php?maChuyenBay='.$row['flight_number'].'" class="btn btn-primary">Đặt vé</a></div>';
+                echo '</div>';
+                echo '</tr>';
+                echo '</table>';
+                echo '</form>';
+            }
+        }
+    }
+
+    else
+    {
+        echo "Vui lòng chọn hãng bay";
+    }
+?>
         </div>
     </div>
 
@@ -160,3 +186,5 @@ $flights = [
     </script>
 </body>
 </html>
+
+

@@ -158,6 +158,7 @@ $countries = [
                             <label for="first_name_<?= $index ?>" class="form-label">Tên</label>
                             <input type="text" class="form-control" id="first_name_<?= $index ?>" name="passengers[<?= $index ?>][first_name]" required>
                         </div>
+                        
                     </div>
                     <div class="row mt-3">
                         <div class="col-md-4">
